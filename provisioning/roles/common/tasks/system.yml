@@ -1,0 +1,28 @@
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+- name: Core apt python dependencies
+  apt: name={{ item }} state=present
+  with_items:
+    - python-pip
+    - python-dev
+
+- name: Install pexpect pip module for interactive applications
+  pip: name=pexpect
+
+- name: Pip install ansible v2.4.2.0 (deploy dice services)
+  pip:
+    name: ansible
+    version: 2.4.2.0
+
+- name: Pip install dice deployment ansible dependencies
+  pip:
+    name: boto3,awscli,boto
+
+- name: Pip install pywinrm>=0.2.2 (dice deployment windows remote management libs)
+  pip:
+    name: pywinrm
+    version: 0.2.2

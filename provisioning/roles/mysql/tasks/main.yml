@@ -1,0 +1,40 @@
+- name: 1. Install MySQL python packages.
+  apt: name="{{item}}" state=present
+  become: yes
+  with_items:
+     - python-mysqldb
+
+
+- name: 1. Install MySQL server package
+  apt: name=mysql-server state=present
+
+- name: 1a. Install MySQL server package
+  apt: name=default-libmysqlclient-dev state=present
+
+- name: 3. Install the Python MySQLB module
+  pip: name=MySQL-python
+
+
+- name: reset mysql config editor path
+  command: mysql_config_editor reset
+
+- name: set mysql config editor password
+  expect:
+    command: mysql_config_editor set --login-path=local --host=localhost --user=root --password
+    responses:
+      (?i)password: "admin"
+
+- name: 4. Start Mysql Service
+  service: name=mysql state=started enabled=true
+
+- name: 5. Create a new database
+  mysql_db: name=test state=present collation=utf8_general_ci
+
+- name: 5a. Create a database user
+  mysql_user: name=admin password=admin priv=*.*:ALL host=localhost state=present
+
+- name: 5b. Copy sample data
+  copy: src=import.sql dest=/tmp/import.sql
+
+- name: 5c. Insert sample data
+  shell: cat /tmp/import.sql | mysql --login-path=local -uadmin test

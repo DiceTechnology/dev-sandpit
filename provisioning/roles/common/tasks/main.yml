@@ -1,0 +1,3 @@
+- include_tasks: system.yml
+- include_tasks: account.yml
+- include_tasks: ansible.yml

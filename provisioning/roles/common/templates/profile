@@ -1,0 +1,10 @@
+export AWS_ACCESS_KEY_ID={{ aws_key }}
+export AWS_SECRET_ACCESS_KEY={{ aws_secret }}
+
+
+if [ "`id -u`" -eq 0 ]
+then
+  export PS1='\[\033[01;31m\]\h \[\033[01;34m\]\W \$ \[\033[00m\]'
+else
+  export PS1='\[\033[01;35m\]\u@\[\033[01;35m\]\h \[\033[01;34m\]\W \$ \[\033[00m\]'
+fi

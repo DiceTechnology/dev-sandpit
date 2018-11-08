@@ -1,0 +1,88 @@
+
+
+- name: "Create dev user account and groups"
+  user:
+    name: "{{ dice_user }}"
+    groups: "admin,www-data,vagrant"
+    shell: /bin/bash
+
+
+- name: "Copy user profile"
+  template:
+    src: profile
+    dest: "/home/{{ dice_user }}/.profile"
+    owner: "{{ dice_user }}"
+    group: "{{ dice_user }}"
+    mode: 0644
+
+- name: "Create {{ dice_user }} home config folder"
+  file:
+    path: "/home/{{ dice_user }}/config"
+    state: directory
+    owner: "{{ dice_user }}"
+    group: "{{ dice_user }}"
+    mode: 0700
+
+
+
+- name: "Create {{ dice_user }} .ssh folder"
+  file:
+    path: "/home/{{ dice_user }}/.ssh"
+    state: directory
+    owner: "{{ dice_user }}"
+    group: "{{ dice_user }}"
+    mode: 0700
+
+
+
+- name: "Upload {{ dice_user }} private SSH key"
+  copy:
+    src: ~/.ssh/id_rsa
+    dest: "/home/{{ dice_user }}/.ssh/id_rsa"
+    owner: "{{ dice_user }}"
+    group: "{{ dice_user }}"
+    mode: 0600
+
+
+
+- name: "Upload {{ dice_user }} public SSH key"
+  copy:
+    src: ~/.ssh/id_rsa.pub
+    dest: "/home/{{ dice_user }}/.ssh/id_rsa.pub"
+    owner: "{{ dice_user }}"
+    group: "{{ dice_user }}"
+    mode: 0640
+
+- name: "Upload {{ dice_user }} public SSH key"
+  copy:
+    src: ~/.ssh/Video-transcoding.pem
+    dest: "/home/{{ dice_user }}/.ssh/Video-transcoding.pem"
+    owner: "{{ dice_user }}"
+    group: "{{ dice_user }}"
+    mode: 0600
+
+
+- name: "Add {{ dice_user }} ssh authorized keys"
+  authorized_key:
+    user: "{{ dice_user }}"
+    key: "{{ lookup('file', lookup('env','HOME') + '/.ssh/id_rsa.pub') }}"
+    #key: "/home/{{ dice_user }}/.ssh/id_rsa.pub"
+    state: present
+
+
+
+- name: Copy ssh config file
+  copy:
+    src: ssh_config
+    dest: "/home/{{ dice_user }}/.ssh/config"
+    owner: "{{ dice_user }}"
+    group: "{{ dice_user }}"
+
+
+
+- name: "Allow admin users to sudo without a password"
+  lineinfile:
+    dest: "/etc/sudoers" # path: in version 2.3
+    state: "present"
+    regexp: "^%admin"
+    line: "%admin ALL=(ALL) NOPASSWD: ALL"

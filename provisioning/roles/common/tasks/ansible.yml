@@ -1,0 +1,21 @@
+- name: Add host machine ansible vault key
+  copy:
+    src: "{{ lookup('ini', 'vault_password_file section=defaults file=~/.ansible.cfg') }}"
+    dest: "/home/{{ dice_user }}/config/ansible_vault_key.txt"
+    owner: "{{ dice_user }}"
+    group: "{{ dice_user }}"
+    mode: 0600
+
+
+- name: "Copy ansible config"
+  template:
+    src: dice_ansible.cfg
+    dest: "/home/{{ dice_user }}/.ansible.cfg"
+    owner: "{{ dice_user }}"
+    group: "{{ dice_user }}"
+    mode: 0644
+
+#- name: Copy aws vars in profile
+#  copy: src=profile dest="/home/{{ dice_user }}/.profile"
+#  owner: "{{ dice_user }}"
+#  mode: 0700

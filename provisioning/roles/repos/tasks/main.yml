@@ -1,0 +1,27 @@
+
+- name: Create repos folder
+  file:
+    path: "/home/{{ dice_user }}/repos"
+    state: directory
+    owner: "{{ dice_user }}"
+    group: "{{ dice_user }}"
+    mode: 0755
+
+- include_tasks: git-clone.yml
+  with_items:
+    - dce-frontoffice
+    - dce-id
+    - dce-mailman
+    - infrastructure
+  loop_control:
+    loop_var: repo
+
+- name: checkout dce-licence repo
+  become: yes
+  become_user: "{{ dice_user }}"
+  git:
+    repo: git@github.com:DiceTechnology/dce-licence.git
+    version: qa
+    dest: "/home/{{ dice_user }}/repos/dce-licence"
+    key_file: /home/{{ dice_user }}/.ssh/id_rsa
+    accept_hostkey: yes

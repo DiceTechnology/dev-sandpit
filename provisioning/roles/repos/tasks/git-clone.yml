@@ -1,0 +1,8 @@
+- name: checkout {{ repo }} repo
+  become: yes
+  become_user: "{{ dice_user }}"
+  git:
+    repo: git@github.com:DiceTechnology/{{ repo }}.git
+    dest: "/home/{{ dice_user }}/repos/{{ repo }}"
+    key_file: "/home/{{ dice_user }}/.ssh/id_rsa"
+    accept_hostkey: yes
