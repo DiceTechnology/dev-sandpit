@@ -1,10 +1,11 @@
 # dev-sandpit
-A handy reset-able development play thing with common tools out of the box
+A handy reset-able development play thing with common tools out of the box.
 
+Follow 3-Steps getting started guide to build the VM.
 
 # Getting started
 
-### Dependencies
+### [STEP-1]: Dependencies
 
 install vagrant and ansible on your machine with your preferred method (eg, brew,
   direct download etc..)
@@ -25,7 +26,7 @@ You can work this out yourself smart arse
 ```
 
 
-### Dice pre-configuration steps to enable automated ansible deploys
+### [STEP-2]: Configuration steps to enable automated ansible deploys
 
 You will need:
 
@@ -49,25 +50,19 @@ change the values:
 ```
 ansible.extra_vars = {
   dice_user: ENV['LOGNAME'], # works on mac
-  aws_key: ENV['AWS_ACCESS_KEY_ID']
-  aws_secret: ENV['AWS_SECRET_ACCESS_KEY']
+  aws_key: ENV['AWS_ACCESS_KEY_ID'],
+  aws_secret: ENV['AWS_SECRET_ACCESS_KEY'],
   ansible_vault_key: ENV['ANSIBLE_VAULT_KEY']
-  dice_env: "local_dev"
 }
 ```
 
-
 ##### (1) Your username
 
-set your username in Vagrant file:
+set your username in Vagrant file config:
 
-if `dice_user: ENV['LOGNAME']` then `export LOGNAME=jonsnow`
+Ensure `$LOGNAME` environment variable is set with `set | grep LOGNAME`
 
-or
-
-`dice_user: ned_stark`
-
-
+If not, export your username: `export LOGNAME=jonsnow`
 
 ##### (2) AWS keys
 
@@ -81,7 +76,7 @@ export AWS_SECRET_ACCESS_KEY<your secret>
 
 ##### (3) Ansible vault key
 
-make sure you have `~/.ansible.cfg` file on your machine with these contents (pointing to a real ansible vault key):
+make sure you have `~/.ansible.cfg` file on your machine with below contents (pointing to a real ansible vault key):
 ```
 [defaults]
 vault_password_file = /path/to/your/local/ansible.key
@@ -92,27 +87,31 @@ When provisioning the VM, scripts will pick up this config and copy accross the 
 
 Your user ssh keys in `~/.ssh` should be configured on github to enbale access to dice repositories
 
-##### (4) Aws ssh key
+##### (5) Aws ssh key
 
 get copy of `Video-transcoding.pem` from a friendly team member and put it in: `/home/<your user>/.ssh/``
 on your current machine (ie: not the vm)
 
 
 
-### Provisioning the Sandpit Server
+### [STEP-3] Build and provision the Sandpit server
 
 `make clean build`
 
 
+
+# You're al set... What now?
+
 ### Logging in the Sandpit server
 
-to login as vagrant admin user:
-
-`vagrant ssh`
-
-or to log in as you:
+To log in as you:
 
 `ssh -p 2222 <user>@localhost`
+
+If you have any account problems, you can log in as vagrant admin user from the 'dev-sandpit' home directory
+(that must contain the Vagrantfile for this command to work):
+
+`vagrant ssh`
 
 ### re-provision VM
 

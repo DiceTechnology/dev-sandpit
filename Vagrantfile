@@ -9,7 +9,7 @@ Vagrant.configure(2) do |config|
     v.name = "dce-sandpit"
   end
 
-  config.vm.synced_folder '~/img', '/img', disabled: false, owner: "vagrant", group: "admin"
+  config.vm.synced_folder '~/img', '/img', disabled: false, owner: ENV['LOGNAME'], group: "admin"
 
   #########################################################
   # NETWORK
@@ -20,7 +20,7 @@ Vagrant.configure(2) do |config|
   #config.vm.network "forwarded_port", guest: 5672, host: 5672
   #config.vm.network "forwarded_port", guest: 15672, host: 15672
   # MySQL Ports
-  config.vm.network "forwarded_port", guest: 3306, host: 3306
+  config.vm.network "forwarded_port", guest: 3306, host: 33060
 
   ###########################################################
   # SSH
@@ -47,8 +47,7 @@ Vagrant.configure(2) do |config|
       dice_user: ENV['LOGNAME'], # works on mac
       aws_key: ENV['AWS_ACCESS_KEY_ID'],
       aws_secret: ENV['AWS_SECRET_ACCESS_KEY'],
-      ansible_vault_key: ENV['ANSIBLE_VAULT_KEY'],
-      dice_env: "local_dev"
+      ansible_vault_key: ENV['ANSIBLE_VAULT_KEY']
     }
   end
 end
