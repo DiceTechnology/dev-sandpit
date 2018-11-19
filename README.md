@@ -5,7 +5,7 @@ Follow 3-Steps getting started guide to build the VM.
 
 # Getting started
 
-### [STEP-1]: Dependencies
+### STEP-1: Dependencies
 
 install vagrant and ansible on your machine with your preferred method (eg, brew,
   direct download etc..)
@@ -26,7 +26,7 @@ You can work this out yourself smart arse
 ```
 
 
-### [STEP-2]: Configuration steps to enable automated ansible deploys
+### STEP-2: Configuration steps to enable automated ansible deploys
 
 You will need:
 
@@ -42,10 +42,10 @@ You will need:
 
 ##### Configure vagrant ansible vars
 
-edit `/dev-sandpit/Vagrantfile` and check the ansible 'extra_vars' variables are correct.
+edit `/dev-sandpit/Vagrantfile` and check ansible 'extra_vars' variables are correct.
 
-You will need to either set the environment variables on the host system, or manually
-change the values:
+You will need to either set the following environment variables on the host system, or manually
+change the values inline:
 
 ```
 ansible.extra_vars = {
@@ -60,9 +60,14 @@ ansible.extra_vars = {
 
 set your username in Vagrant file config:
 
-Ensure `$LOGNAME` environment variable is set with `set | grep LOGNAME`
+Ensure `$LOGNAME` environment variable is correctly set: 
 
-If not, export your username: `export LOGNAME=jonsnow`
+```
+# set | grep LOGNAME
+LOGNAME=<your account>
+```
+
+If not, export your username like so: `export LOGNAME=jonsnow`
 
 ##### (2) AWS keys
 
@@ -94,7 +99,7 @@ on your current machine (ie: not the vm)
 
 
 
-### [STEP-3] Build and provision the Sandpit server
+### STEP-3: Build and provision the Sandpit server
 
 `make clean build`
 
