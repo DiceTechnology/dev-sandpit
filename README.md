@@ -105,7 +105,7 @@ on your current machine (ie: not the vm)
 
 
 
-# You're al set... What now?
+# All set... What now?
 
 ### Logging in the Sandpit server
 
